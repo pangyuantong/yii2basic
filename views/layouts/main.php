@@ -51,8 +51,14 @@ AppAsset::register($this);
                     ['class' => 'btn btn-link logout']
                 )
                 . Html::endForm()
+                . Html::beginForm(['/guest/index'], 'post')
+                . Html::submitButton(
+                    'Manage Guest',
+                    ['class' => 'btn btn-link logout']
+                )
+                . Html::endForm()
                 . '</li>'
-            )
+            ) 
         ],
     ]);
     NavBar::end();

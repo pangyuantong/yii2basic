@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Expression;
 use yii\behaviors\BlameableBehavior; 
 use yii\behaviors\TimestampBehavior;
 
@@ -32,11 +33,18 @@ class Guest extends \yii\db\ActiveRecord
 
     public function behaviors()
     {
-        return [ 
-            TimestampBehavior::class,
+        return [
             [
-                'class'=>BlameableBehavior::class,
-                'createdByAttribute' => false
+                'class' => TimestampBehavior::class,
+                'createdAtAttribute' => 'createdAt',
+                'updatedAtAttribute' => 'modifiedDate',
+                'value' => new Expression('NOW()'),
+            ],
+        
+            [
+                'class' => BlameableBehavior::class, 
+                'createdByAttribute' => false,
+                'updatedByAttribute' => 'modifiedBy',
             ]
         ];
     }
@@ -46,7 +54,7 @@ class Guest extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'address', 'gender', 'birthdate', 'createdAt', 'modifiedBy', 'modifiedDate'], 'required'],
+            [['name', 'address', 'gender', 'birthdate'], 'required'],
             [['address'], 'string'],
             [['gender', 'modifiedBy'], 'integer'],
             [['birthdate', 'createdAt', 'modifiedDate'], 'safe'],
